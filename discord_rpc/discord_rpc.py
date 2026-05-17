@@ -82,7 +82,21 @@ class DiscordRpc(Extension):
 
     # noinspection PyPep8Naming
     def createActions(self, window):
-        pass
+        reconnect_action = window.createAction(
+            "krita_rpc_reconnect_discord",
+            "Reconnect Discord RPC",
+            "tools/scripts"
+        )
+        reconnect_action.triggered.connect(self.manual_reconnect)
+    
+    def manual_reconnect(self):
+        print("User requested Discord RPC reconnection")
+        if RPC.connected:
+            print("Already connected to Discord")
+        else:
+            print("Attempting to reconnect...")
+            RPC.reconnect()
+            self.update_rpc() # Force an update after reconnecting if not it won't show anything ww
             
     # noinspection PyPep8Naming
     def windowClosed(self):
